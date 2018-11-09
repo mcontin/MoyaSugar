@@ -9,16 +9,16 @@ open class MoyaSugarProvider<Target: SugarTargetType>: MoyaProvider<Target> {
 
   override public init(
     endpointClosure: @escaping EndpointClosure = MoyaProvider.defaultEndpointMapping,
-    requestClosure: @escaping RequestClosure = MoyaProvider.defaultRequestMapping,
+    requestClosure: @escaping RequestClosure = MoyaProvider<Target>.defaultRequestMapping,
     stubClosure: @escaping StubClosure = MoyaProvider.neverStub,
     callbackQueue: DispatchQueue? = nil,
     manager: Manager = MoyaProvider<Target>.defaultAlamofireManager(),
     plugins: [PluginType] = [],
     trackInflights: Bool = false
   ) {
-    func sugarEndpointClosure(target: Target) -> Endpoint<Target> {
+	func sugarEndpointClosure(target: Target) -> Endpoint {
       let endpoint = endpointClosure(target)
-      return Endpoint<Target>(
+		return Endpoint(
         url: target.url.absoluteString,
         sampleResponseClosure: endpoint.sampleResponseClosure,
         method: endpoint.method,
